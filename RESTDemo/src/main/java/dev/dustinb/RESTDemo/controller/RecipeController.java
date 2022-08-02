@@ -29,8 +29,6 @@ public class RecipeController {
     //save a recipe
     @PostMapping()
     public void  saveRecipe(@RequestBody Recipe recipe){
-        System.out.println("loading");
         recipeService.saveRecipe(recipe);
-
     }
 }
