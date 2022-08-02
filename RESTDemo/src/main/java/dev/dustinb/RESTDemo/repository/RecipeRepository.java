@@ -2,15 +2,23 @@ package dev.dustinb.RESTDemo.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.RecursiveAction;
 
 @Repository
 public class RecipeRepository {
@@ -18,6 +26,7 @@ public class RecipeRepository {
     private Resource jsonResource;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
 
     //return all recipe names
     public Map<String, List<String>> findAll(){
@@ -40,6 +49,42 @@ public class RecipeRepository {
             return recipeDetailsHashMap;
         }
         return null;
+    }
+
+    //save a recipe
+    public void  saveRecipe(Recipe theRecipe){
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        System.out.println("saving");
+        Recipe saveRecipe = theRecipe;
+        System.out.println(theRecipe.getName());
+        List<Recipe> recipes = readJsonRecipes();
+
+        recipes.add(saveRecipe);
+        try{
+            //convert to json
+            String jsonRecipes = objectMapper.writeValueAsString(recipes);
+            File afile= new File(jsonResource.getFile().getAbsolutePath());
+            afile.setWritable(true);
+            try{
+                FileWriter fileWriter = new FileWriter(afile, false);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(jsonRecipes);
+                System.out.println("DONE");
+                bufferedWriter.close();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+
+
+
+            System.out.println("finished");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("saved");
+
     }
 
 

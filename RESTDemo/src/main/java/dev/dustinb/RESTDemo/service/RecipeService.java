@@ -1,5 +1,6 @@
 package dev.dustinb.RESTDemo.service;
 
+import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import dev.dustinb.RESTDemo.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class RecipeService  {
 
     public Map<String, RecipeDetails> findDetails(String recipeName){
         return recipeRepository.recipeDetails(recipeName);
+    }
+
+    public void  saveRecipe(Recipe recipe){
+        System.out.println("service");
+        recipeRepository.saveRecipe(recipe);
     }
 }

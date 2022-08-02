@@ -1,5 +1,6 @@
 package dev.dustinb.RESTDemo.controller;
 
+import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import dev.dustinb.RESTDemo.service.RecipeService;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +24,13 @@ public class RecipeController {
     @GetMapping("/details/{recipeName}")
     public Map<String, RecipeDetails> recipeDetails(@PathVariable("recipeName") String recipeName){
         return recipeService.findDetails(recipeName);
+    }
+
+    //save a recipe
+    @PostMapping()
+    public void  saveRecipe(@RequestBody Recipe recipe){
+        System.out.println("loading");
+        recipeService.saveRecipe(recipe);
+
     }
 }
