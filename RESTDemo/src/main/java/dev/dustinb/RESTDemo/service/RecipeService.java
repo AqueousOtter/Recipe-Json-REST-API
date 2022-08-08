@@ -1,10 +1,12 @@
 package dev.dustinb.RESTDemo.service;
 
+import dev.dustinb.RESTDemo.exception.RecipesException;
 import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import dev.dustinb.RESTDemo.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public class RecipeService  {
         return recipeRepository.recipeDetails(recipeName);
     }
 
-    public void  saveRecipe(Recipe recipe){
+    public void saveRecipe(Recipe recipe){
         recipeRepository.saveRecipe(recipe);
     }
 }

@@ -3,7 +3,10 @@ package dev.dustinb.RESTDemo.controller;
 import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import dev.dustinb.RESTDemo.service.RecipeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +31,8 @@ public class RecipeController {
 
     //save a recipe
     @PostMapping()
-    public void  saveRecipe(@RequestBody Recipe recipe){
-        recipeService.saveRecipe(recipe);
+    public ResponseEntity<?> saveRecipe(@RequestBody Recipe recipe){
+            recipeService.saveRecipe(recipe);
+            return new ResponseEntity<>(recipe, HttpStatus.CREATED);
     }
 }
