@@ -64,10 +64,13 @@ public class RecipeRepository {
 
     //class methods
     private RecipeList readJsonRecipes(){     //reads json file and populates list of recipes
-        RecipeList allRecipes = null;
+        RecipeList allRecipes = new RecipeList();
         try{
             ObjectReader reader = objectMapper.reader().withRootName("recipes").forType(Recipe[].class); //reads after "recipes" in json file
-            allRecipes = reader.readValue(jsonResource.getFile());
+            Recipe[] jsonRecipes = reader.readValue(jsonResource.getFile());
+            for(Recipe jsonRecipe : jsonRecipes) { //populate the recipes in recipeList from
+                allRecipes.getRecipes().add(jsonRecipe); //adds each  recipe from array to recipeList object
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
