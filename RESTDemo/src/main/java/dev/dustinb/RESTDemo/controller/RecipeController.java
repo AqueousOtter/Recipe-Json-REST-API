@@ -33,6 +33,14 @@ public class RecipeController {
     @PostMapping()
     public ResponseEntity<?> saveRecipe(@RequestBody Recipe recipe){
             recipeService.saveRecipe(recipe);
-            return new ResponseEntity<>(recipe, HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    //update recipe
+    @PutMapping()
+    public  ResponseEntity<?> updateRecipe(@RequestBody Recipe recipe) {
+        recipeService.updateRecipe(recipe);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

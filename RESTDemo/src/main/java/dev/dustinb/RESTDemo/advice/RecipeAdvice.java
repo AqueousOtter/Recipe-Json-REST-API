@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class RecipeAdvice {
-
-
     //handles saving two of the same recipes, returns error message
     @ExceptionHandler(RecipesException.class)
     public ResponseEntity<ErrorMessage> handleRecipeExists(RecipesException RecipesException){
         ErrorMessage exceptionResponse = new ErrorMessage(RecipesException.getErrorMessage());
         return new ResponseEntity<ErrorMessage>(exceptionResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
 
 }

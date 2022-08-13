@@ -8,7 +8,6 @@ import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -63,13 +62,33 @@ public class RecipeRepository {
         saveJsonRecipes(recipeMap);
     }
 
+    public void updateRecipe(Recipe theRecipe) {
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        List<Recipe> recipes = readJsonRecipes(); //read current json file list of recipes
+        boolean isChanged = false;
+        for (Recipe recipe : recipes) { //checks for matching recipe
+            if (recipe.getName().equalsIgnoreCase(theRecipe.getName())) {
+                recipe.setIngredients(theRecipe.getIngredients());
+                recipe.setInstructions(theRecipe.getInstructions());
+                isChanged = true;
+                break;
+            }
+        }
+        if(!isChanged) {
+            throw new RecipesException("404", "Recipe does not exist");
+        }
+        Map<String, List<Recipe>> recipeMap = new HashMap<>();
+        recipeMap.put("recipes", recipes); // prepare recipes for saving to updated json file
+        saveJsonRecipes(recipeMap);
+    }
+
     //class methods
     private List<Recipe> readJsonRecipes(){     //reads json file and populates list of recipes
         List<Recipe> allRecipes = new ArrayList<>();
         try{
             ObjectReader reader = objectMapper.reader().withRootName("recipes").forType(Recipe[].class); //reads after "recipes" in json file
             Recipe[] jsonRecipes = reader.readValue(jsonResource.getFile());
-            for (Recipe jsonRecipe : jsonRecipes) { //populate a recipelist from array of recipes read
+            for (Recipe jsonRecipe : jsonRecipes) { //populate a recipe list from array of recipes read
                 allRecipes.add(jsonRecipe);
             }
         }catch (Exception e){
@@ -92,4 +111,5 @@ public class RecipeRepository {
             e.printStackTrace();
         }
     }
+
 }

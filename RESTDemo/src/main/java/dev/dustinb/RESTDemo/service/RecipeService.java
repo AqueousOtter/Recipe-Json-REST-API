@@ -1,6 +1,5 @@
 package dev.dustinb.RESTDemo.service;
 
-import dev.dustinb.RESTDemo.exception.RecipesException;
 import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import dev.dustinb.RESTDemo.repository.RecipeRepository;
@@ -30,5 +29,8 @@ public class RecipeService  {
 
     public void saveRecipe(Recipe recipe){
         recipeRepository.saveRecipe(recipe);
+    }
+    public void updateRecipe(Recipe recipe){
+         recipeRepository.updateRecipe(recipe);
     }
 }
