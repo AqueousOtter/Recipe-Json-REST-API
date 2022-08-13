@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import dev.dustinb.RESTDemo.exception.RecipesException;
 import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
-import dev.dustinb.RESTDemo.recipe.RecipeList;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -30,8 +29,8 @@ public class RecipeRepository {
     public Map<String, List<String>> findAll(){
         HashMap<String, List<String>> findAllMap = new HashMap<>();
         List<String> recipeNames = new ArrayList<>();
-        RecipeList recipes = readJsonRecipes();
-        for (Recipe recipe : recipes.getRecipes()) {
+        List<Recipe> recipes = readJsonRecipes();
+        for (Recipe recipe : recipes) {
             recipeNames.add(recipe.getName());
         }
         findAllMap.put("recipeNames",recipeNames);
@@ -40,7 +39,7 @@ public class RecipeRepository {
 
     //return details for given recipeName, null if not listed
     public Map<String, RecipeDetails> recipeDetails(String recipeName){
-        List<Recipe> theRecipe = readJsonRecipes().getRecipes().stream().filter(recipe -> recipe.getName().equalsIgnoreCase(recipeName)).toList();
+        List<Recipe> theRecipe = readJsonRecipes().stream().filter(recipe -> recipe.getName().equalsIgnoreCase(recipeName)).toList();
         if(!theRecipe.isEmpty()){
             Map<String, RecipeDetails> recipeDetailsHashMap = new HashMap<>();
             recipeDetailsHashMap.put("details", new  RecipeDetails(theRecipe.get(0).getIngredients(), theRecipe.get(0).getInstructions().size()));
@@ -52,24 +51,26 @@ public class RecipeRepository {
     //save a recipe if not currently in json file
     public void saveRecipe(Recipe theRecipe){
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        RecipeList recipes = readJsonRecipes(); //read current json file list of recipes
-        for (Recipe recipe : recipes.getRecipes()) { //checks for duplicate
+        List<Recipe> recipes = readJsonRecipes(); //read current json file list of recipes
+        for (Recipe recipe : recipes) { //checks for duplicate
             if (recipe.getName().equalsIgnoreCase(theRecipe.getName())) {
                 throw new RecipesException("400", "Recipe already saved");
             }
         }
-        recipes.getRecipes().add(theRecipe);
-        saveJsonRecipes(recipes);
+        recipes.add(theRecipe);
+        Map<String, List<Recipe>> recipeMap = new HashMap<>();
+        recipeMap.put("recipes", recipes); // prepare recipes for saving to updated json file
+        saveJsonRecipes(recipeMap);
     }
 
     //class methods
-    private RecipeList readJsonRecipes(){     //reads json file and populates list of recipes
-        RecipeList allRecipes = new RecipeList();
+    private List<Recipe> readJsonRecipes(){     //reads json file and populates list of recipes
+        List<Recipe> allRecipes = new ArrayList<>();
         try{
             ObjectReader reader = objectMapper.reader().withRootName("recipes").forType(Recipe[].class); //reads after "recipes" in json file
             Recipe[] jsonRecipes = reader.readValue(jsonResource.getFile());
-            for(Recipe jsonRecipe : jsonRecipes) { //populate the recipes in recipeList from
-                allRecipes.getRecipes().add(jsonRecipe); //adds each  recipe from array to recipeList object
+            for (Recipe jsonRecipe : jsonRecipes) { //populate a recipelist from array of recipes read
+                allRecipes.add(jsonRecipe);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -78,7 +79,7 @@ public class RecipeRepository {
     }
 
     //saves map of recipes to json file.
-    private void saveJsonRecipes(RecipeList recipes){
+    private void saveJsonRecipes(Map<String, List<Recipe>> recipes){
         try{
             String jsonRecipes = objectMapper.writeValueAsString(recipes);
             BufferedWriter bufferedWriter = new BufferedWriter( new FileWriter(jsonResource.getFile()));

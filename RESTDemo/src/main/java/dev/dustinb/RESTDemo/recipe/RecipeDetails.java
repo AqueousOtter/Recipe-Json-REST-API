@@ -24,7 +24,7 @@ public class RecipeDetails {
         return numSteps;
     }
 
-    public void setNumSteps(int numSteps) {
+    public void setnumSteps(int numSteps) {
         this.numSteps = numSteps;
     }
 }
