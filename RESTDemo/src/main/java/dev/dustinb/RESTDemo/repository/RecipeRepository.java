@@ -19,9 +19,11 @@ import java.util.Map;
 
 @Repository
 public class RecipeRepository {
+
     @Value("classpath:data.json")
     private Resource jsonResource;
     private final ObjectMapper objectMapper = new ObjectMapper();
+
 
 
     //return all recipe names
@@ -41,7 +43,8 @@ public class RecipeRepository {
         List<Recipe> theRecipe = readJsonRecipes().stream().filter(recipe -> recipe.getName().equalsIgnoreCase(recipeName)).toList();
         if(!theRecipe.isEmpty()){
             Map<String, RecipeDetails> recipeDetailsHashMap = new HashMap<>();
-            recipeDetailsHashMap.put("details", new  RecipeDetails(theRecipe.get(0).getIngredients(), theRecipe.get(0).getInstructions().size()));
+            RecipeDetails theDetails = new RecipeDetails(theRecipe.get(0).getIngredients(), theRecipe.get(0).getInstructions().size());
+            recipeDetailsHashMap.put("details", theDetails);
             return recipeDetailsHashMap;
         }
         return null;

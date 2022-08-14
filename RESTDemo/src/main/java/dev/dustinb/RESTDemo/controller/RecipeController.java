@@ -3,6 +3,7 @@ package dev.dustinb.RESTDemo.controller;
 import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import dev.dustinb.RESTDemo.service.RecipeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,9 @@ import java.util.Map;
 public class RecipeController {
     RecipeService recipeService;
 
-    public RecipeController(RecipeService recipeService) {
-        this.recipeService = recipeService;
+    @Autowired
+    public RecipeController(RecipeService theRecipeService) {
+        this.recipeService = theRecipeService;
     }
 
     @GetMapping("/all")
