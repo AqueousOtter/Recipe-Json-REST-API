@@ -12,6 +12,14 @@ public class RecipeDetails {
         this.numSteps = numSteps;
     }
 
+/*    @Override
+    public String toString() {
+        return "{" +
+                "'ingredients'" + ingredients +
+                ", 'numSteps'" + numSteps +
+                '}';
+    }*/
+
     public List<String> getIngredients() {
         return ingredients;
     }

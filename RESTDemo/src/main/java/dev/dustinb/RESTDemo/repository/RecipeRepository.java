@@ -41,13 +41,15 @@ public class RecipeRepository {
     //return details for given recipeName, null if not listed
     public Map<String, RecipeDetails> recipeDetails(String recipeName){
         List<Recipe> theRecipe = readJsonRecipes().stream().filter(recipe -> recipe.getName().equalsIgnoreCase(recipeName)).toList();
-        if(!theRecipe.isEmpty()){
-            Map<String, RecipeDetails> recipeDetailsHashMap = new HashMap<>();
-            RecipeDetails theDetails = new RecipeDetails(theRecipe.get(0).getIngredients(), theRecipe.get(0).getInstructions().size());
-            recipeDetailsHashMap.put("details", theDetails);
-            return recipeDetailsHashMap;
+        if(theRecipe.isEmpty()){
+            return null;
         }
-        return null;
+        Map<String, RecipeDetails> recipeDetailsHashMap = new HashMap<>();
+        RecipeDetails theDetails = new RecipeDetails(theRecipe.get(0).getIngredients(), theRecipe.get(0).getInstructions().size());
+       // theRecipeDetails.add(new RecipeDetails(theRecipe.get(0).getIngredients(), theRecipe.get(0).getInstructions().size()));
+        recipeDetailsHashMap.put("details", theDetails);
+        return recipeDetailsHashMap;
+
     }
 
     //save a recipe if not currently in json file

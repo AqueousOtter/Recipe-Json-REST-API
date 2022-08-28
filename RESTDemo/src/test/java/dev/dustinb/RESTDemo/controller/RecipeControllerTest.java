@@ -3,6 +3,7 @@ package dev.dustinb.RESTDemo.controller;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
 import dev.dustinb.RESTDemo.repository.RecipeRepository;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+/*  In progress */
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -58,15 +60,14 @@ class RecipeControllerTest {
 //            String getRequest = "recipes/details/scrambledEggs";
             RequestBuilder request = get("/recipes/details/scrambledEggs").requestAttr("recipeName", "scrambledEggs" );
             MvcResult result = mvc.perform(request).andReturn();
-            System.out.println(recipeRepository.recipeDetails("scrambledEggs"));
-
-
             //TODO: expected is wrong
+            Map<String, RecipeDetails> lExamples =  recipeRepository.recipeDetails("scrambledEggs");
+            JSONObject json = new JSONObject();
+            json.put("details", recipeRepository.recipeDetails("scrambledEggs").get("details"));
+            System.out.println(recipeRepository.recipeDetails("scrambledEggs").get("details"));
+            System.out.println("1" + json);
+            System.out.println("2" + result.getResponse().getContentAsString());
 
-
-            Map<String, RecipeDetails> lExamples = recipeRepository.recipeDetails("scrambledEggs");
-            JSONObject json = new JSONObject(lExamples);
-            System.out.println(json);
             assertEquals(json.toString(), result.getResponse().getContentAsString());
         } catch (Exception e){
             fail();
