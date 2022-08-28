@@ -1,30 +1,58 @@
 package dev.dustinb.RESTDemo.repository;
 
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@RunWith(SpringRunner.class)
+
 @SpringBootTest
-@AutoConfigureMockMvc
-class RecipeRepositoryTest {
+public class RecipeRepositoryTest {
+
+    /*
+        unfinished -- work in progress
+     */
 
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @Test
-    void findAll() {
-        System.out.println(recipeRepository.findAll().get("recipeNames").size());
-        assertTrue(recipeRepository.findAll().size() > 0);
+    private TestInfo testInfo;
+    private TestReporter testReporter;
+
+    @BeforeEach
+    void init(TestInfo testInfo, TestReporter testReporter){
+        System.out.println("Starting");
+        this.testInfo = testInfo;
+        this.testReporter = testReporter;
+        testReporter.publishEntry("Running " + testInfo.getDisplayName() + " with tags " + testInfo.getTags());
     }
 
     @Test
-    void recipeDetails() {
+    void findAll() {
+
+        System.out.println(recipeRepository.findAll().get("recipeNames").size());
+        assertFalse(recipeRepository.findAll().isEmpty());
     }
+
+        @Nested
+        @DisplayName("Testing recipe details ")
+        @Tag("recipeDetails")
+        class RecipeDetailsTest {
+
+            @Test
+            @DisplayName("return is not empty")
+            void testHasSize(){
+                assertFalse(recipeRepository.recipeDetails("chai").isEmpty());
+            }
+            @Test
+            @DisplayName("test number of steps for 'chia'.")
+            void matchesInput(){
+                final int chaiSteps = 4;
+
+                //store in object
+                assertEquals(chaiSteps, recipeRepository.recipeDetails("chia").get("details").getnumSteps());
+            }
+        }
 
     @Test
     void saveRecipe() {

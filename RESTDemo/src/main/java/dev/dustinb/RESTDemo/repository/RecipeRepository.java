@@ -24,6 +24,10 @@ public class RecipeRepository {
     private Resource jsonResource;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    public RecipeRepository(){
+
+    }
+
 
 
     //return all recipe names
