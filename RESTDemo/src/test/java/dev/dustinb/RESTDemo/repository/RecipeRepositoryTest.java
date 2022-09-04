@@ -45,12 +45,10 @@ public class RecipeRepositoryTest {
                 assertFalse(recipeRepository.recipeDetails("chai").isEmpty());
             }
             @Test
-            @DisplayName("test number of steps for 'chia'.")
-            void matchesInput(){
+            @DisplayName("test number of steps for 'chai'.")
+            void hasCorrectNumSteps(){
                 final int chaiSteps = 4;
-
-                //store in object
-                assertEquals(chaiSteps, recipeRepository.recipeDetails("chia").get("details").getnumSteps());
+                assertEquals(chaiSteps, recipeRepository.recipeDetails("chai").get("details").getnumSteps());
             }
         }
 
