@@ -64,14 +64,14 @@ public class RecipeRepositoryTest {
     void saveRecipe() {
         List<String> instructions = new ArrayList<>();
         List<String> ingredients = new ArrayList<>();
-        instructions.add("Freeze hotdogs");
+        instructions.add("Freeze hot dogs");
         instructions.add("Boil ice cream floats");
         instructions.add("Mix and re-freeze");
-        ingredients.add("1 hotdog");
+        ingredients.add("1 hot dog");
         ingredients.add("3 Ice cream floats");
-        Recipe newRecipe = new Recipe("Hotdog Ice Cream", ingredients, instructions);
+        Recipe newRecipe = new Recipe("Hot dog Ice Cream", ingredients, instructions);
         recipeRepository.saveRecipe(newRecipe);
-        assertTrue(recipeRepository.findAll().get("recipeNames").contains("Hotdog Ice Cream"));
+        assertTrue(recipeRepository.findAll().get("recipeNames").contains("Hot dog Ice Cream"));
     }
 
     @Test
