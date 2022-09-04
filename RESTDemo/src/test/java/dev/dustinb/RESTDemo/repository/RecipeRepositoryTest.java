@@ -3,6 +3,7 @@ package dev.dustinb.RESTDemo.repository;
 import static org.junit.jupiter.api.Assertions.*;
 import dev.dustinb.RESTDemo.recipe.Recipe;
 import dev.dustinb.RESTDemo.recipe.RecipeDetails;
+import org.junit.Ignore;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,6 +61,7 @@ public class RecipeRepositoryTest {
             }
         }
 
+    @Ignore //will throw exception if ran more than once
     @Test
     void saveRecipe() {
         List<String> instructions = new ArrayList<>();
@@ -72,6 +74,13 @@ public class RecipeRepositoryTest {
         Recipe newRecipe = new Recipe("Hot dog Ice Cream", ingredients, instructions);
         recipeRepository.saveRecipe(newRecipe);
         assertTrue(recipeRepository.findAll().get("recipeNames").contains("Hot dog Ice Cream"));
+    }
+
+    @Test
+    void deleteRecipe(){
+        recipeRepository.deleteRecipe("Hot dog Ice Cream");
+        System.out.println(recipeRepository.findAll());
+        assertFalse(recipeRepository.findAll().get("recipeNames").contains("Hot dog Ice Cream"));
     }
 
     @Test

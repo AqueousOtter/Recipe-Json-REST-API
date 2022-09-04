@@ -71,6 +71,22 @@ public class RecipeRepository {
         saveJsonRecipes(recipeMap);
     }
 
+    //remove recipe from json file given string name
+    public void deleteRecipe(String recipeName){
+        List<Recipe> recipes = readJsonRecipes();
+
+        for (Recipe recipe : recipes) { //loops through and removes if there is a match
+            if (recipe.getName().equalsIgnoreCase(recipeName)) {
+                recipes.remove(recipe);
+                break;
+            }
+        }
+        Map<String, List<Recipe>> recipeMap = new HashMap<>();
+        recipeMap.put("recipes", recipes); // prepare recipes for saving to updated json file
+        saveJsonRecipes(recipeMap);
+
+    }
+
     public void updateRecipe(Recipe theRecipe) {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         List<Recipe> recipes = readJsonRecipes(); //read current json file list of recipes
