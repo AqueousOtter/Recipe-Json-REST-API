@@ -34,7 +34,6 @@ public class RecipeRepositoryTest {
         System.out.println(recipeRepository.findAll().get("recipeNames").size());
         assertFalse(recipeRepository.findAll().isEmpty());
     }
-
         @Nested
         @DisplayName("Testing recipe details ")
         @Tag("recipeDetails")
@@ -61,7 +60,7 @@ public class RecipeRepositoryTest {
             }
         }
 
-    @Ignore //will throw exception if ran more than once
+
     @Test
     void saveRecipe() {
         List<String> instructions = new ArrayList<>();
@@ -85,5 +84,14 @@ public class RecipeRepositoryTest {
 
     @Test
     void updateRecipe() {
+        Recipe theRecipe = new Recipe();
+        theRecipe.setName(recipeRepository.findAll().get("recipeNames").get(1));
+        final int prevNumSteps = 0;
+        System.out.println("Before test: " + theRecipe.getInstructions().size());
+
+        theRecipe.getInstructions().add("Test input 1");
+        System.out.println("After add: " + theRecipe.getInstructions().size());
+        recipeRepository.updateRecipe(theRecipe);
+        assertTrue(recipeRepository.recipeDetails(theRecipe.getName()).get("details").getnumSteps()>prevNumSteps);
     }
 }

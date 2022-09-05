@@ -3,6 +3,8 @@ package dev.dustinb.RESTDemo.recipe;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,6 +15,9 @@ public class Recipe {
     private List<String> instructions;
 
     public Recipe() {
+        this.name = "";
+        this.ingredients = new ArrayList<>();
+        this.instructions = new ArrayList<>();
     }
 
     @JsonCreator
