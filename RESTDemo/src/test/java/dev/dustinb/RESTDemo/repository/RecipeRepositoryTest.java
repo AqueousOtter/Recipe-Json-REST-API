@@ -62,6 +62,7 @@ public class RecipeRepositoryTest {
 
 
     @Test
+    @DisplayName("Testing saveRecipe method")
     void saveRecipe() {
         List<String> instructions = new ArrayList<>();
         List<String> ingredients = new ArrayList<>();
@@ -76,6 +77,7 @@ public class RecipeRepositoryTest {
     }
 
     @Test
+    @DisplayName("Testing deleteRecipe method")
     void deleteRecipe(){
         recipeRepository.deleteRecipe("Hot dog Ice Cream");
         System.out.println(recipeRepository.findAll());
@@ -83,12 +85,12 @@ public class RecipeRepositoryTest {
     }
 
     @Test
+    @DisplayName("Testing updateRecipe method adds recipe changes.")
     void updateRecipe() {
         Recipe theRecipe = new Recipe();
         theRecipe.setName(recipeRepository.findAll().get("recipeNames").get(1));
         final int prevNumSteps = 0;
         System.out.println("Before test: " + theRecipe.getInstructions().size());
-
         theRecipe.getInstructions().add("Test input 1");
         System.out.println("After add: " + theRecipe.getInstructions().size());
         recipeRepository.updateRecipe(theRecipe);
